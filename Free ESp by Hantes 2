@@ -1,0 +1,28 @@
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
+
+-- Function to highlight a player
+local function highlightPlayer(player)
+    -- Wait until the player's character is loaded
+    local character = player.Character or player.CharacterAdded:Wait()
+    
+    -- Create a highlight object
+    local highlight = Instance.new("Highlight")
+    highlight.Parent = character
+    highlight.FillColor = Color3.new(1, 0, 0) -- Red color for the highlight
+    highlight.FillTransparency = 0.5 -- Set transparency
+    highlight.OutlineColor = Color3.new(0, 0, 0) -- Black outline
+    highlight.OutlineTransparency = 0.5 -- Set outline transparency
+    
+    -- Connect to character removal
+    character.AncestryChanged:Connect(function(_, parent)
+        if not parent then
+            highlight:Destroy() -- Remove highlight if character is removed
+        end
+    end)
+end
+
+-- Highlight all existing players
+for _, player in ipairs(Players:GetPlayers()) do
+    highlightPlayer(player)
+end

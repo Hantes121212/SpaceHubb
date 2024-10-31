@@ -1,0 +1,20 @@
+local function highlightPlayer(player)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local highlight = Instance.new("Highlight")
+    highlight.Adornee = character
+    highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Change color to red
+    highlight.FillTransparency = 0.5 -- Adjust transparency as needed
+    highlight.Parent = character
+end
+
+-- Highlight existing players
+for _, player in ipairs(game.Players:GetPlayers()) do
+    highlightPlayer(player)
+end
+
+-- Highlight new players when they join
+game.Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function()
+        highlightPlayer(player)
+    end)
+end)
